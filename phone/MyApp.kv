@@ -1,0 +1,19 @@
+
+
+
+
+
+<no_connection_screen>:
+    GridLayout:
+        rows: 3
+        padding: 200
+        Label:
+            text: 'Can\'t reach the server'
+        TextInput:
+            id: server_ip
+            text: 'enter servers ip'
+            halign: 'center'
+            on_focus: self.text = ''
+        Button:
+            text: 'submit'
+            on_press: root.on_press_submit(server_ip.text)
