@@ -1,0 +1,3 @@
+title=<my app>
+author=<me>
+orientation=<portait|landscape>

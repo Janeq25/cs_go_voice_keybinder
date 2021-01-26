@@ -30,11 +30,12 @@ class Client():
         else:
             try:
                 self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.client.settimeout(5)
                 self.client.connect(self.ADDR)
                 self.is_connected = True
                 return True
-            except:
-                print('connection error')
+            except socket.timeout as e:
+                print('connection error: ', e)
                 raise Exception('Could not Connect')
 
     #sends '!DISCONNECT' message

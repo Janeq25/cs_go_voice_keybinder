@@ -73,7 +73,7 @@ class Server():
 
     def start(self):
         self.server.listen()
-        print(f'starting server on ip {socket.gethostbyname(socket.gethostname())}')
+        print(f'starting server on ip {socket.gethostbyname(socket.gethostname())} : {self.PORT}')
         while True:
             conn, addr = self.server.accept()
             thread = threading.Thread(target=self.handle_client, args=(conn, addr))
