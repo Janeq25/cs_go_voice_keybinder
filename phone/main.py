@@ -32,6 +32,7 @@ def load_ip():
         print('created json file')
 
     try:
+
         sound_list = c.request('REQUEST')
         c.disconnect()
     except:
@@ -118,11 +119,13 @@ class Buttons_list(GridLayout):
             #print(instance.text)
             #print('PLATY ' + title)
             c.send('PLAY ' + instance.text)
+            print(instance.text)
+            #c.send('CHUJ')
             c.disconnect()
-            return True
+            #return True
         except:
             sm.current = 'no_connection_screen'
-            return False
+            #return False
 
 
 

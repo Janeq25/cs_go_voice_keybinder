@@ -15,7 +15,7 @@ class Client():
     def __init__(self, server_ip):
         self.HOST = server_ip
         self.HEADER_SIZE = 64
-        self.PORT = 65432
+        self.PORT = 65433
         self.ADDR = (self.HOST, self.PORT)
         self.HEADER_FORMAT = 'utf-8'
         self.DISCONNECT_MSG = '!DISCONNECT'
@@ -68,7 +68,7 @@ class Client():
 
     #sends request message and waits for response
     def request(self, msg):
-        self.connect()
+        #self.connect()
         self.send(msg)
         return self.recive()
 

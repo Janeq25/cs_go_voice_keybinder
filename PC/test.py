@@ -1,33 +1,53 @@
-from kivy.app import App
-from kivy.uix.screenmanager import Screen, ScreenManager
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.button import Button
-
-class myScreen(Screen):
-    def __init__(self, **kwargs):
-
-        self.grid = GridLayout(cols=6)
-        self.grid.my_buttons = []
-        super(myScreen, self).__init__(**kwargs)
-        for x in range(20):
-            btt = Button(text=str(x))
-            btt.bind(on_press=self.pressed)
-            self.grid.my_buttons.append(btt)
-            self.grid.add_widget(btt)
-
-        self.add_widget(self.grid)
+import threading
+#import soundcard as sc
+import sounddevice as sd
+import pydub
+import numpy as np
 
 
-    def pressed(self, instance):
-        print('pressed: ', instance.text)
+def read(f, volume, normalized=False):
+    """MP3 to numpy array"""
+    a = pydub.AudioSegment.from_mp3(f)
+    a += volume
+    y = np.array(a.get_array_of_samples())
+    if a.channels == 2:
+        y = y.reshape((-1, 2))
+    if normalized:
+        return a.frame_rate, np.float32(y) / 2**15
+    else:
+        return y, a.frame_rate
+
+
+def play(data, sample_rate, speaker):
+
+    try:
+        if speaker == 'default':
+            #print(sd.query_devices())
+            #sc.default_speaker().play(data, sample_rate, channels=2)
+            sd.play(data, sample_rate)
+            sd.wait()
+        else:
+            #sc.get_speaker(speaker).play(data, sample_rate, channels=2)
+            default = sd.default.device
+            sd.default.device = speaker
+            sd.play(data, sample_rate)
+            sd.wait()
+            sd.default.device = default
+        # sc.default_speaker().play(data, sample_rate, channels=2)
+    except Exception as e:
+        print(e)
+        #sc.default_speaker().play(data, sample_rate, channels=2)
+
+def sound_stop():
+    sd.stop()
 
 
 
-class MyApp(App):
-    def build(self):
-        sm = ScreenManager()
-        sm.add_widget(myScreen(name='no_connection_screen'))
-        return sm
+#framerate , data = read('sounds/am gej.mp3',0 , normalized=True)
 
-if __name__ == '__main__':
-    MyApp().run()
+#t2 = threading.Thread(target=play, args=(data, framerate, 'VoiceMeeter Aux Input (VB-Audio VoiceMeeter AUX VAIO), Windows DirectSound',))
+#t1 = threading.Thread(target=play, args=(data, framerate, 'default',))
+#t1.start()
+#t2.start()
+
+

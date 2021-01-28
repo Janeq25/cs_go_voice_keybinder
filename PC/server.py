@@ -23,15 +23,16 @@ class Server():
         else:
             self.on_message_handler = self.on_message
         self.HEADER_SIZE = 64
-        self.PORT = 65432
-        #self.HOST = socket.gethostbyname(socket.gethostname())
-        self.HOST = '0.0.0.0'
+        self.PORT = 65433
+        self.HOST = socket.gethostbyname(socket.gethostname())
+        #self.HOST = '0.0.0.0'
         self.ADDR = (self.HOST, self.PORT)
         self.HEADER_FORMAT = 'utf-8'
         self.DISCONNECT_MSG = '!DISCONNECT'
 
-        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server = socket.socket()
         self.server.bind(self.ADDR)
+        self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     def on_message(self, conn, addr, msg):
         print(addr, 'said', msg)
@@ -58,6 +59,7 @@ class Server():
                 msg = pickle.loads(conn.recv(msg_length))
 
                 if msg == self.DISCONNECT_MSG:
+                    conn.shutdown(socket.SHUT_RDWR)
                     conn.close()
                     connected = False
                     print('DISCONNECTING')
