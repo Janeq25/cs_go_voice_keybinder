@@ -8,6 +8,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
+from  kivy.uix.scrollview import ScrollView
+from kivy.core.window import Window
 
 
 
@@ -91,23 +93,54 @@ class Buttons_list(GridLayout):
             sm.current = 'no_connection_screen'
 
         super(Buttons_list, self).__init__(**kwargs)
-        self.cols = 4
+        self.cols = 3
         #box = BoxLayout()
         self.padding = 10
         self.my_buttons = []
+        self.size_hint_y = None
+        self.bind(minimum_height=self.setter('height'))
 
         for title in sound_list:
             button = Button(text=title)
-            button.font_size = button.width * 0.15
+            button.font_size = button.width * 0.19
             button.text_size = button.width, None
             button.halign = 'center'
             button.valign = 'middle'
+            button.size_hint_y = None
+            button.height = 100
             #button.bind(on_press=lambda x: self.pressed(button.text))
             button.bind(on_press=self.pressed)
             self.my_buttons.append(button)
             self.add_widget(button)
         #self.add_widget(box)
 
+
+# class Buttons_list(ScrollView):
+#     def __init__(self, **kwargs):
+#         if sound_list == []:
+#             sm.current = 'no_connection_screen'
+#
+#         super(Buttons_list, self).__init__(**kwargs)
+#         self.size_hint = (1, None)
+#         self.size = (Window.width, Window.height)
+#
+#         layout = GridLayout(cols=4, spacing=5, size_hint_y=None)
+#         layout.my_buttons = []
+#         layout.bind(minimum_height=self.setter('height'))
+#
+#         for title in sound_list:
+#             button = Button(text=title)
+#             button.height = 70
+#             button.size_hint_y = None
+#             button.font_size = button.width * 0.19
+#             button.text_size = button.width, None
+#             button.halign = 'center'
+#             button.valign = 'middle'
+#             #button.bind(on_press=lambda x: self.pressed(button.text))
+#             button.bind(on_press=self.pressed)
+#             layout.my_buttons.append(button)
+#             layout.add_widget(button)
+#         self.add_widget(layout)
 
 
 

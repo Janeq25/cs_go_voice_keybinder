@@ -28,7 +28,7 @@
         rows: 2
         orientetion: 'vertical'
         BoxLayout:
-            size_hint: 0.3, 0.3
+            size_hint: 1, 0.3
             Button:
                 text: 'stop'
                 on_press: root.on_press_stop()
@@ -45,7 +45,11 @@
                     on_value: root.on_slider_value_change(self.value)
                 Label:
                     text: 'volume'
-        Buttons_list:
+
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            Buttons_list:
 
 
 

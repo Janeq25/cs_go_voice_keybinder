@@ -92,28 +92,29 @@ class Sound_player():
         elif msg.startswith('PLAY'):
             msg = msg.replace('PLAY ', '')
             print(msg)
-            #self.play_sound(self.sound_dict[msg])
-            #kkkkif self.sound_process1 == None:
-            music_player.sound_stop()
-            #print('trza zacząć porcess')
-            sample_rate, data = music_player.read(self.sound_dict[msg], self.volume, normalized=True)
-            #self.sound_process1 = threading.Thread(target=self.play_sound, args=(data, sample_rate, 'VoiceMeeter Aux Input (VB-Audio VoiceMeeter AUX VAIO), Windows DirectSound', ))
-            #self.sound_process2 = threading.Thread(target=self.play_sound, args=(data, sample_rate, 'default',))
-            self.sound_process1 = multiprocessing.Process(target=music_player.play, args=(data, sample_rate, 'VoiceMeeter Aux Input (VB-Audio VoiceMeeter AUX VAIO), Windows DirectSound',))
-            self.sound_process2 = multiprocessing.Process(target=music_player.play, args=(data, sample_rate, 'default',))
-            #self.sound_process1 = Popen(['music_player_popen.py', str(self.volume), 'VoiceMeeter Aux Input (VB-Audio VoiceMeeter AUX VAIO), Windows DirectSound'])
-            #self.sound_process2 = Popen(['music_player_popen.py', str(self.volume), 'default',])
-            #print('proces powstał')
-            self.sound_process2.start()
-            self.sound_process1.start()
-            #print('proces ruszył')
-            #keyboard.press('k')
-            PressKey(0x25)
-            self.sound_process1.join()
-            #keyboard.release('k')
-            ReleaseKey(0x25)
-            self.sound_process1 = None
-            self.sound_process2 = None
+            if self.sound_process2 == None:
+                #self.play_sound(self.sound_dict[msg])
+                #if self.sound_process1 == None:
+                music_player.sound_stop()
+                #print('trza zacząć porcess')
+                sample_rate, data = music_player.read(self.sound_dict[msg], self.volume, normalized=True)
+                #self.sound_process1 = threading.Thread(target=self.play_sound, args=(data, sample_rate, 'VoiceMeeter Aux Input (VB-Audio VoiceMeeter AUX VAIO), Windows DirectSound', ))
+                #self.sound_process2 = threading.Thread(target=self.play_sound, args=(data, sample_rate, 'default',))
+                self.sound_process1 = multiprocessing.Process(target=music_player.play, args=(data, sample_rate, 'VoiceMeeter Aux Input (VB-Audio VoiceMeeter AUX VAIO), Windows DirectSound',))
+                self.sound_process2 = multiprocessing.Process(target=music_player.play, args=(data, sample_rate, 'default',))
+                #self.sound_process1 = Popen(['music_player_popen.py', str(self.volume), 'VoiceMeeter Aux Input (VB-Audio VoiceMeeter AUX VAIO), Windows DirectSound'])
+                #self.sound_process2 = Popen(['music_player_popen.py', str(self.volume), 'default',])
+                #print('proces powstał')
+                PressKey(0x25)
+                self.sound_process2.start()
+                self.sound_process1.start()
+                #print('proces ruszył')
+                #keyboard.press('k')
+                self.sound_process1.join()
+                #keyboard.release('k')
+                ReleaseKey(0x25)
+                self.sound_process1 = None
+                self.sound_process2 = None
 
         elif msg.startswith('STOP'):
             if not self.sound_process2 == None:
